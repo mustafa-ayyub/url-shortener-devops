@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:node/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "env": {
+    "node": true,
+    "es2021": true,
+    "jest": true
+  },
+  "rules": {
+    "node/no-unsupported-features/es-syntax": "off"
+  },
+    "overrides": [
+    {
+      "files": ["**/__test__/**", "**/*.test.js", "**/*.spec.js"],
+      "rules": {
+        "node/no-unpublished-require": "off"
+      }
+    }
+  ]
+}

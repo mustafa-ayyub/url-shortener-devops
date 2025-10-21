@@ -7,6 +7,31 @@ Ignore environment variables file because it contains secrets
 Ignore log files
 *.log
 
-Ignore OS-specific files
+Ignore OS-sp# Node.js dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+coverage-final.json
+lcov.info
+clover.xml
+
+# Jest cache
+.jest/
+
+# Report files
+*.html
+ecific files
 .DS_Store
 Thumbs.db
