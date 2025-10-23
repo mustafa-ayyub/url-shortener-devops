@@ -1,8 +1,6 @@
-# IAM role that allows ECS to run tasks and pull images
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecs_task_execution_role"
 
-  # This policy allows AWS ECS to assume this role
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -22,19 +20,17 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   }
 }
 
-# The main policy that gives permissions
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# This is the "task definition" or "blueprint" for our container.
 resource "aws_ecs_task_definition" "app_task" {
   family                   = "url-shortener-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"  # 256 (.25 vCPU) - Free Tier
-  memory                   = "512"  # 512 MB - Free Tier
+  cpu                      = "256"
+  memory                   = "512"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
@@ -66,12 +62,11 @@ resource "aws_ecs_task_definition" "app_task" {
   }
 }
 
-# This is the "service" that runs our task and keeps it alive.
 resource "aws_ecs_service" "app_service" {
   name            = "url-shortener-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app_task.arn
-  desired_count   = 1 # Run one instance
+  desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -80,13 +75,10 @@ resource "aws_ecs_service" "app_service" {
     assign_public_ip = true # Give it a public IP
   }
 
-  # This stops Terraform from breaking if the image
-  # isn't ready immediately during CI/CD.
   lifecycle {
     ignore_changes = [task_definition, desired_count]
   }
 
-  # Wait for the Redis cluster to be ready before starting the app
   depends_on = [aws_elasticache_cluster.redis]
 
   tags = {
