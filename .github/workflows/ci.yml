@@ -3,8 +3,7 @@ name: CI - Build and Test
 on:
   push:
     branches:
-      - "*" # Run on all branches
-      - "!main" # Except the main branch
+      - "**" # Run on all branches
 
 jobs:
   lint-and-test:
