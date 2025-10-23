@@ -17,4 +17,4 @@ services:
       - redis-data:/data
 
 volumes:
-  redis-data: # Define the volume
+  redis-data:
