@@ -20,6 +20,17 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "app_logs" {
+  name = "/ecs/url-shortener-app"
+
+  retention_in_days = 7
+
+  tags = {
+    Name    = "url-shortener-app-logs"
+    Project = "url-shortener"
+  }
+}
+
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
