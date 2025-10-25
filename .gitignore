@@ -35,3 +35,7 @@ clover.xml
 ecific files
 .DS_Store
 Thumbs.db
+
+# Terraform state and providers
+.terraform/
+*.tfstate*
