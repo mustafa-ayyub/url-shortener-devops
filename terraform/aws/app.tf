@@ -52,6 +52,14 @@ resource "aws_ecs_task_definition" "app_task" {
           value = "3000"
         }
       ],
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-group"         = "/ecs/url-shortener-app",
+          "awslogs-region"        = var.aws_region, 
+          "awslogs-stream-prefix" = "ecs"
+        }
+      },
       essential = true
     }
   ])
